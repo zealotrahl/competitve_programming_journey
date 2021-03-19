@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <cstdio>
+#include <algorithm>
+#include <set>
+
+
+using namespace std;
+
+int main(){
+
+	int n;
+
+	cin >> n;
+
+	string k;
+
+	cin >> k;
+
+	int counter = 0;
+	if(n%2 == 0){
+		int index = n-3;
+		
+		while(counter < n){
+
+			cout << k[index];
+
+			if(index == 0){
+				index = n-1;
+			}else{
+				index -= 2;
+			}
+
+		}
+
+	}
+
+
+	return 0;
+}
