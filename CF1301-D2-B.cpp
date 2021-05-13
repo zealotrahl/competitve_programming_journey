@@ -26,79 +26,48 @@ int main(){
 	cin >> t;
 
 	while(t--){
-		int n;
+		long long n;
 
 		cin >> n;
 
 		vector <long long> arr(n);
 
-		for(int i =0;i<n;i++)
+		for(long long i =0;i<n;i++) {
 			cin >> arr[i];
+		}
 
-		long long k = 0;
-
-		long long m = INT_MIN;
-
-
-		long long sum = 0;
+		long long mn = INT_MAX;
+		long long mx = INT_MIN;
 		int count = 0;
-
-
-
-		for(int i =0;i<n;i++){
-			if(arr[i] == -1){
-
-				if(i != 0 && arr[i-1] != -1){
-					sum += arr[i-1];
-
+		for(long long i =0;i<n;i++){
+			if(arr[i] != -1){
+				// cout << arr[i] << " ";
+				if(i != n-1 && arr[i+1] == -1) {
 					count++;
-				}
-
-				if(i != n-1 && arr[i+1] != -1){
-					sum += arr[i+1];
-
+					mx = max(mx, arr[i]);
+					mn = min(mn, arr[i]);
+				} else if(i != 0 && arr[i-1] == -1) {
 					count++;
+					mx = max(mx, arr[i]);
+					mn = min(mn, arr[i]);
 				}
 			}
 		}
-
-
-
-		if(count == 0){
-			cout << 0 << " " << 5;
-		}else{
-
-			int ans = round(1.0*sum/count);
-
-
-			int res = ans, min = INT_MAX;
-			int mxx = INT_MIN;
-
-			for (int x = max(0, ans - 1); x <= ans + 1; x++) {
-			      int mxx = 0;
-			      for (int i = 0; i < n - 1; i++) {
-			          int x1 = arr[i], x2 = arr[i + 1];
-			          if (x1 < 0)
-			              x1 = x;
-			          if (x2 < 0)
-			              x2 = x;
-			          mxx = max(mxx, abs(x1 - x2));
-			      }
-			      if (mxx < min) {
-			          min = mxx;
-			          res = x;
-			      }
-			  }
-
-
-
-
-
-
-			   cout << min << ' ' << res;
+		if(count == 0) {
+			cout << 0 << " " << 5 << endl;
+			continue;
 		}
-
-		cout << endl;
+		long long middle = (mn+mx)/2;
+		for(int i =0;i<n;i++){
+			if(arr[i] == -1){
+				arr[i] = middle;
+			}
+		}
+		long long abs_d = INT_MIN;
+		for(int i=0;i<n-1;i++){
+			abs_d = max(abs_d, abs(arr[i] - arr[i+1]));
+		}
+		cout << abs_d << " " << middle << endl;
 	}
 	
 

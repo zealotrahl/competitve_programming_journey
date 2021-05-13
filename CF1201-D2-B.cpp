@@ -54,34 +54,23 @@ int main(){
   //getline(cin, s);
   //printf("%.9f\n", x);
   
-  bool flag = true;
   int n;
   cin >> n;
-  map<int,int> mp;
+  long long sum = 0;
+  long long max_a=  0;
   for(int i =0;i<n;i++){
-    int a;
+    long long a;
     cin >> a;
-    mp[a]++;
+    max_a = max(max_a, a);
+    sum += a;
   }
 
-  vector<int> bez_pari;
-  int left = 0;
-  for(auto x : mp){
-    if(x.second&1){
-      if(x.second == 1){
-        bez_pari.push_back(x.first);
-        left += x.first;
-      } else if(x.first&1){
-        left++;
-      }
-    }
-  }
-
-  if(flag){
+  if(sum%2 == 0 && max_a <= sum - max_a) {
     cout << "YES" << endl;
-  } else{
+  } else {
     cout << "NO" << endl;
   }
+
 
   system("pause");
   return 0;

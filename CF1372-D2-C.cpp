@@ -64,31 +64,29 @@ int main(){
     for(long long i =0;i<n;i++){
       cin >> arr[i];
     }
-
+    int answer = 1;
     int counter = 0;
-    int l,r;
+    int step = 0;
     for(int i =0;i<n;i++){
-      if(arr[i] != i+1){
-        counter++;
-        if(counter == 1){
-          r = i;
-        } else {
-          l = i;
+      if(arr[i] == i+1){
+        if(step == 1) {
+        	step = 2;
         }
+      } else {
+      	counter++;
+      	if(step == 0) {
+      		step = 1;
+      	} else if(step == 2) {
+      		answer = 2;
+      		break;
+      	}
       }
     }
-    if(counter == 0){
+    if (counter == 0) {
       cout << 0 << endl;
-    }else{
-       if(counter == n || (counter == 2 && arr[r] == l)){
-         cout << 1 << endl;
-       } else {
-        if(counter&1)
-          cout << 3 << endl;
-        else
-         cout << 2 << endl;
-       }
-   }
+    } else {
+    	cout << answer << endl;
+    }
   }
 
   system("pause");

@@ -59,18 +59,35 @@ int main(){
 	while(t--){
 		int n,m;
 		cin >> n >> m;
+		map<int,int> mp;
+
 		int x;
-		set<int> ans;
 		for(int i =0;i<n;i++){
 			cin >> x;
-			ans.insert(x%m);
+			mp[x%m]++;
 		}
 
-		for(auto x : ans) {
-			cout << x << " ";
+		set<int> used;
+		int ans = 0;
+		for(auto x : mp) {
+			if(used.count(x.first)) {
+				continue;
+			}
+			if(x.first == 0) {
+				ans++;
+				continue;
+			}
+			int need = m - x.first;
+			if(mp[need] && x.second) {
+				ans++;
+				if (max(x.second, mp[need]) - min(x.second, mp[need]) > 1)
+					ans += max(x.second, mp[need]) - min(x.second, mp[need]) - 1;
+				used.insert(need);
+			} else {
+				ans += x.second;
+			}
 		}
-		cout << endl;
-		cout << ans.size() << endl;
+		cout << ans << endl;
 	}
 
 	system("pause");

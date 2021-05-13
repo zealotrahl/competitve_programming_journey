@@ -45,31 +45,6 @@ bool customSort(int a, int b) {
   return a < b;
 }
 
-int ceil_log2(unsigned long long x)
-{
-  static const unsigned long long t[6] = {
-    0xFFFFFFFF00000000ull,
-    0x00000000FFFF0000ull,
-    0x000000000000FF00ull,
-    0x00000000000000F0ull,
-    0x000000000000000Cull,
-    0x0000000000000002ull
-  };
-
-  int y = (((x & (x - 1)) == 0) ? 0 : 1);
-  int j = 32;
-  int i;
-
-  for (i = 0; i < 6; i++) {
-    int k = (((x & t[i]) == 0) ? 0 : j);
-    y += k;
-    x >>= k;
-    j >>= 1;
-  }
-
-  return y;
-}
-
 int main(){
   ios::sync_with_stdio(0);
   cin.tie(0);
@@ -83,17 +58,23 @@ int main(){
 
   cin >> k;
 
-  k = ceil_log2(k);
-
   // cout << k << endl;
   vector<pair<char,int>> word = {{'c', 1}, {'o', 1}, {'d', 1}, {'e', 1}, {'f', 1}, {'o', 1}, {'r', 1}, {'c', 1}, {'e', 1}, {'s', 1}};
 
-  int cur = 0;
-  for(int i =0;i<k;i++){
-    word[cur].second++;
-    cur++;
-    if(cur == 10)
-      cur = 0;
+
+  if(k > 1) {
+    int j = 0;
+    while (true) {
+        j %= 10;
+        word[j].second++;
+        long long m = 1;
+        for (int i = 0; i < 10; i++) {
+            m *= word[i].second;
+        }
+        if (m >= k)
+            break;
+        j++;
+    }
   }
 
   for(int i =0;i<word.size();i++){

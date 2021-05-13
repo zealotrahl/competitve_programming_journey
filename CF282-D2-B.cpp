@@ -25,103 +25,27 @@ int main(){
 
 	cin >> n;
 
-	int a,g;
-
+	long long a_s = 0;
+	long long g_s = 0;
+	int a,b;
 	string out = "";
-
-	int a_m = 0;
-	int g_m = 0;
-
-	vector <tuple<int,int,bool>> arr(n);
 	for(int i =0;i<n;i++){
-		cin >> a >> g;
+		cin >> a >> b;
 
-		int diff = a-g;
-
-		if(diff < 0){
-			a_m += abs(diff);
-
-			arr[i] = (make_tuple(abs(diff),i, true));
-		}else{
-			g_m += abs(diff);
-
-			arr[i] = (make_tuple(abs(diff), i,false));
+		if(abs(g_s - (a_s+a)) > 500) {
+			g_s += b;
+			out += "G";
+		} else {
+			a_s += a;
+			out += "A";
 		}
 	}
-
-	sort(arr.begin(), arr.end());
-
-	bool flag =false;
-
-	if(abs(a_m - g_m) > 500){
-
-		cout<< a_m - g_m << endl;
-		if(a_m > g_m){
-
-			for(int i =0;i<n;i++){
-
-				if(get<2>(arr[i])){
-					a_m -= get<0>(arr[i]);
-					g_m += get<0>(arr[i]);
-
-					get<2>(arr[i]) = false;
-
-				}
-
-				if(a_m < g_m){
-					flag = true;
-					break;
-				}
-
-			}
-
-		}else{
-
-			for(int i =0;i<n;i++){
-
-				if(!get<2>(arr[i])){
-					a_m += get<0>(arr[i]);
-					g_m -= get<0>(arr[i]);
-
-					get<2>(arr[i]) = true;
-				}
-
-				if(a_m > g_m){
-					flag = true;
-					break;
-				}
-			}
-
-		}
-	}else{
-		flag = true;
+	// cout << out << endl;
+	if(abs(a_s - g_s) > 500) {
+		cout << -1 << endl;
+	} else {
+		cout << out << endl;
 	}
-
-
-	if(!flag){
-		cout << -1;
-	}else{
-		for(int i =0;i<n;i++){
-
-			for(int j = 0;j<n;j++){
-				if(get<1>(arr[j]) == i){
-
-					if(get<2>(arr[j])){
-						cout << 'A';
-					}else{
-						cout << 'G';
-					}
-
-					break;
-				}
-			}
-			
-		}
-	}
-
-
-	
-
 	system("pause");
 	return 0;
 }

@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
-
+ 
 using namespace std;
-
+ 
 typedef long long ll;
 typedef pair<int,int> pi;
 typedef vector<pi> vpi;
 typedef vector<int> vi;
-
+ 
 #define PB push_back
 #define MP make_pair
 // Common memset settings
 //memset(memo, -1, sizeof memo); // dp memoization with -1
 //memset(arr, 0, sizeof arr); //clear array of integers
-
-
+ 
+ 
 struct P {
 	int x, y;
 	bool operator<(const P &p) {
@@ -21,7 +21,7 @@ struct P {
 		else return y < p.y;
 	}
 };
-
+ 
 void subsetGenerate(int n){
 	for (int b = 0; b < (1<<n); b++) {
 		vector<int> subset;
@@ -30,7 +30,7 @@ void subsetGenerate(int n){
 		}
 	}
 }
-
+ 
 void permutationGenerate(int n){
 	vector<int> permutation;
 	for (int i = 0; i < n; i++) {
@@ -40,15 +40,15 @@ void permutationGenerate(int n){
 	// process permutation
 	} while (next_permutation(permutation.begin(),permutation.end()));
 }
-
+ 
 bool customSort(int a, int b) {
 	return a < b;
 }
-
-long long lcm(long long a, long long b){
+ 
+long long lcm_f(long long a, long long b){
 	return (a*b)/__gcd(a, b);
 }
-
+ 
 int main(){
 	ios::sync_with_stdio(0);
 	cin.tie(0);
@@ -61,56 +61,89 @@ int main(){
 	cin >> t;
 	while(t--){
 		long long a,b;
-
+ 
 		cin >> a >> b;
-		int t;
+		long long temp;
 		if(a > b){
-			t = a;
+			temp = a;
 			a = b;
-			b = t;
+			b = temp;
 		}
-
-		int q;
+ 
+		long long q;
 		cin >> q;
 		long long l,r;
-		long long step = lcm(a,b);
-		if(__gcd(a,b) == 1){
-			step = min(a,b);
-		}
-
-		for(int i=0;i<q;i++){
+		long long lcm = lcm_f(a,b);
+		while(q--) {
 			cin >> l >> r;
-			if(a == b || a == 1 || b == 1){
-				cout << 0 << " ";
-			}else{
-				long long count = 0;
-				if(step >= l && step <= r){
-					long long p = r-l;
-					long long k = p/step;
-					if(k>0)
-						k--;
+			// a <= b;
+			long long count = 0;
 
-					count += k*step;
+
+			long long nextLcm = l+lcm - l%lcm;
+			long long startLcm = l - lcm + (lcm - l%lcm);
+
+			if(nextLcm >= r) {
+				if(l%lcm == 0) {
+					if(l+b <= r) {
+						count += r - (l + b);
+						if (r%lcm != 0) {
+							count++;
+						}
+					}
+				} else {
+					if(l >= startLcm + b) {
+						long long adding = r - l;
+						if (r%lcm != 0) {
+							adding++;
+						}
+						count += max(0ll, adding);
+					} else {
+						long long adding = r - (l+b - l%b);
+						if (r%lcm != 0) {
+							adding++;
+						}
+
+						count += max(0ll, adding);
+					}
 				}
-				if(count == 0){
-					for(int j = max(a,b);j<=r;j++){
-						if((j%a)%b != (j%b)%a){
+			} else {
+				if(l%lcm == 0) {
+					count += nextLcm - (l + b);
+				} else {
+					if(l >= (startLcm+b - startLcm%b)) {
+						count += nextLcm - l;
+					} else {
+						count += nextLcm - (l+b - l%b);
+					}
+				}
+
+				l = nextLcm;
+
+				long long prevLcm = r-lcm + (lcm - r%lcm);
+				if (prevLcm >= l) {
+					if (prevLcm+b <= r) {
+						count += r - (prevLcm + b);
+						if (r%lcm != 0) {
 							count++;
 						}
 					}
 				}
+				r = prevLcm;
 
-				cout << count << " ";
+				if(l < r) {
+					long long range = r-l;
+					long long ads = lcm - b;
+					long long steps = range/lcm;
+				
+					count += ads*steps;
+				}
 			}
+
+			cout << count << " ";
 		}
 		cout << endl;
 	}
-	// for(int i =1;i<50;i++){
-	// 	cout << i << " " << i%6%8 << " " << i%8%6 << endl;
-	// }
-
 	system("pause");
 	return 0;
 }
-
-
